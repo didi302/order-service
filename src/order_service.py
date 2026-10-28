@@ -33,3 +33,13 @@ def get_order_status(order_id):
     """获取订单状态。"""
     order = get_order(order_id)
     return order["status"] if order else "NOT_FOUND"
+
+
+def refund_order(order_id):
+    order = ORDERS.get(order_id)
+    if not order:
+        raise ValueError("订单不存在")
+    if order["status"] != "PAID":
+        raise ValueError("只有已支付订单允许退款")
+    order["status"] = "REFUNDED"
+    return order
